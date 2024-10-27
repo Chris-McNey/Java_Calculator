@@ -1,4 +1,4 @@
-import java.util.Objects;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class Main {
@@ -6,48 +6,61 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int x;
-        int y;
-        int z = 0;
+        double x;
+        double y;
+        double z = 0;
+        String xFormat;
+        String yFormat;
+        String result;
         char operator;
-        boolean doContinue = true;
         String answer = "n";
+        Scanner scanner = new Scanner(System.in);
+        DecimalFormat df = new DecimalFormat("#,###.#######");
 
         do {
-            Scanner scanner = new Scanner(System.in);
-            if (Objects.equals(answer, "y")) {
+            if (answer.equals("y")) {
                 x = z;
             } else {
                 System.out.print("Please enter your first number: ");
-                x = Integer.parseInt(scanner.nextLine());
+                x = Double.parseDouble(scanner.nextLine());
             }
-            System.out.println("What operation would you like to perform?: ");
+            System.out.print("What operation would you like to perform?: ");
             operator = scanner.nextLine().charAt(0);
             System.out.print("Please enter your second number: ");
-            y = Integer.parseInt(scanner.nextLine());
-            z = switch (operator) {
-                case '+' -> addition(x, y);
-                case '-' -> subtraction(x, y);
-                case '*' -> multiplication(x, y);
-                case '/' -> division(x, y);
-                default -> z;
-            };
-            System.out.println(x + " " + operator + " " + y + " = " + z + "\n");
-            System.out.println("Would you like to reuse your answer?(y/n): ");
-            answer = scanner.nextLine();
-        } while (doContinue);
+            y = Double.parseDouble(scanner.nextLine());
+            if (operator == '/' && y == 0) {
+                System.out.println("Cannot divide my zero. \n");
+            } else {
+                z = switch (operator) {
+                    case '+' -> addition(x, y);
+                    case '-' -> subtraction(x, y);
+                    case '*' -> multiplication(x, y);
+                    case '/' -> division(x, y);
+                    default -> z;
+                };
+                xFormat = df.format(x);
+                yFormat = df.format(y);
+                result = df.format(z);
+                System.out.println(xFormat + " " + operator + " " + yFormat + " = " + result + "\n");
+                System.out.println("Would you like to reuse your answer?(y/n): ");
+                answer = scanner.nextLine();
+            }
+        } while (true);
     }
 
-    static int addition(int x, int y) {
+    static double addition(double x, double y) {
         return x + y;
     }
-    static int subtraction(int x, int y) {
+
+    static double subtraction(double x, double y) {
         return x - y;
     }
-    static int multiplication(int x, int y) {
+
+    static double multiplication(double x, double y) {
         return x * y;
     }
-    static int division(int x, int y) {
+
+    static double division(double x, double y) {
         return x / y;
     }
 }
